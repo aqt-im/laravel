@@ -6,11 +6,16 @@ use AqtIm\Laravel\Contracts\Ticket;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 use Spatie\WebhookServer\WebhookCall;
 
 class SendTicketEvent implements ShouldQueue
 {
     use Queueable;
+
+    public int $tries = 3;
+
+    public array $backoff = [10, 60];
 
     public function __construct(
         public readonly string $model,
@@ -43,14 +48,22 @@ class SendTicketEvent implements ShouldQueue
             return;
         }
 
+        $payload = [
+            'id' => $this->key,
+            'type' => $this->type,
+            'timestamp' => now()->toIso8601String(),
+            'data' => $data,
+        ];
+
+        if (! aqtim()->mode()->sends()) {
+            Log::debug('aqt.im webhook', ['url' => aqtim()->webhookUrl(), 'payload' => $payload]);
+
+            return;
+        }
+
         WebhookCall::create()
             ->url(aqtim()->webhookUrl())
-            ->payload([
-                'id' => $this->key,
-                'type' => $this->type,
-                'timestamp' => now()->toIso8601String(),
-                'data' => $data,
-            ])
+            ->payload($payload)
             ->useSecret(aqtim()->webhookSecret())
             ->dispatch();
     }

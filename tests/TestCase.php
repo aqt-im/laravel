@@ -43,7 +43,7 @@ class TestCase extends Orchestra
 
         $app['config']->set('queue.default', 'sync');
 
-        $app['config']->set('aqtim.webhook.url', 'https://webhook.aqt.im/');
+        $app['config']->set('aqtim.mode', 'test');
         $app['config']->set('aqtim.webhook.secret', 'secret');
     }
 }

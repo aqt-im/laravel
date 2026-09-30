@@ -1,12 +1,15 @@
 <?php
 
 return [
+    'mode' => env('AQTIM_MODE'),
+
     'webhook' => [
-        'url' => env('AQTIM_WEBHOOK_URL'),
+        'url' => null,
         'secret' => env('AQTIM_WEBHOOK_SECRET'),
-        'queue' => env('AQTIM_WEBHOOK_QUEUE'),
+        'queue' => null,
     ],
+
     'ticket' => [
-        'url' => env('AQTIM_TICKET_URL', 'https://ticket.aqt.im'),
+        'url' => null,
     ],
 ];
