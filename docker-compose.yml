@@ -1,0 +1,11 @@
+services:
+  php85:
+    build:
+      context: .
+    volumes:
+      - .:/app
+      - vendor:/app/vendor
+    entrypoint: ["sh", "-c", "composer install --no-interaction && vendor/bin/phpunit"]
+
+volumes:
+  vendor:

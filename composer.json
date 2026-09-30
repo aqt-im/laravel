@@ -1,0 +1,52 @@
+{
+    "name": "aqt-im/laravel",
+    "description": "Sends ticket events from a Laravel application to aqt.im.",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "X-Adam",
+            "email": "www@mehmetogmen.com.tr",
+            "homepage": "https://mehmetogmen.com.tr"
+        }
+    ],
+    "require": {
+        "php": "^8.5",
+        "illuminate/database": "^13.0",
+        "illuminate/queue": "^13.0",
+        "illuminate/support": "^13.0",
+        "spatie/laravel-webhook-server": "^3.10"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^11.0",
+        "phpunit/phpunit": "^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AqtIm\\Laravel\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AqtIm\\Laravel\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AqtIm\\Laravel\\AqtimServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
