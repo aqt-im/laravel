@@ -35,6 +35,15 @@ enum Mode: string
         };
     }
 
+    public function shortUrl(): string
+    {
+        return match ($this) {
+            self::Production => 'https://aqt.im',
+            self::Test => 'https://test.aqt.im',
+            self::Local => 'https://local.aqt.im',
+        };
+    }
+
     public function sends(): bool
     {
         return $this !== self::Local;

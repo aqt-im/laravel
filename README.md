@@ -19,15 +19,15 @@ Ortam değişkenleri:
 
 Adresler moddan gelir:
 
-| Mod | Webhook | Bilet sayfası | Gönderim |
-|-----|---------|---------------|----------|
-| `production` | `https://webhook.aqt.im` | `https://ticket.aqt.im` | Gönderir |
-| `test` | `https://webhook.test.aqt.im` | `https://ticket.test.aqt.im` | Gönderir |
-| `local` | `https://webhook.local.aqt.im` | `https://ticket.local.aqt.im` | Göndermez |
+| Mod | Webhook | Bilet sayfası | Kısa bağlantı | Gönderim |
+|-----|---------|---------------|---------------|----------|
+| `production` | `https://webhook.aqt.im` | `https://ticket.aqt.im` | `https://aqt.im` | Gönderir |
+| `test` | `https://webhook.test.aqt.im` | `https://ticket.test.aqt.im` | `https://test.aqt.im` | Gönderir |
+| `local` | `https://webhook.local.aqt.im` | `https://ticket.local.aqt.im` | `https://local.aqt.im` | Göndermez |
 
 `local` modda olay yine kuyruğa girer ve payload kurulur; HTTP isteği atılmaz, gidecek istek `debug` seviyesinde log'a yazılır.
 
-Bir modun adresini ezmek için config yayınlanır ve `webhook.url` veya `ticket.url` doğrudan yazılır:
+Bir modun adresini ezmek için config yayınlanır ve `webhook.url`, `ticket.url` veya `short.url` doğrudan yazılır:
 
 ```shell
 php artisan vendor:publish --tag=aqtim-config
@@ -65,6 +65,20 @@ class Ticket extends Model implements \AqtIm\Laravel\Contracts\Ticket
 Trait `created`, `updated`, `deleted`, `restored` ve varsa `approvalChanged` olaylarını dinler. Her olay transaction commit edildikten sonra kuyruğa girer; payload job çalıştığında modelin güncel halinden üretilir.
 
 Bilet sayfasının adresi `aqtim()->ticketUrl($pnrCode)` ile alınır.
+
+## Kısa Bağlantılar
+
+aqt.im kökündeki kısa yollar ziyaretçiyi aqtivite.com.tr'deki sayfaya yönlendirir. Adresler `aqtim()->shortLink()` ile üretilir:
+
+| Metot | Adres |
+|-------|-------|
+| `user($username)` | `https://aqt.im/u/{username}` |
+| `artist($slug)` | `https://aqt.im/a/{slug}` |
+| `organizer($slug)` | `https://aqt.im/o/{slug}` |
+| `event($slug)` | `https://aqt.im/e/{slug}` |
+| `venue($slug)` | `https://aqt.im/v/{slug}` |
+
+QR koduna basılacak adres `aqtim()->shortLink(qr: true)` ile alınır; adresin sonuna `?qr` eklenir. aqt.im bu işareti yönlendirmede `utm_source=qr&utm_medium=print` parametrelerine çevirir, QR kodu kısa kalır.
 
 ## Test
 

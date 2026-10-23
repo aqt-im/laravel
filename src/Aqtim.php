@@ -31,6 +31,11 @@ class Aqtim
         return rtrim($url, '/').'/'.$pnrCode;
     }
 
+    public function shortLink(bool $qr = false): ShortLink
+    {
+        return new ShortLink($this->config->get('aqtim.short.url') ?? $this->mode()->shortUrl(), $qr);
+    }
+
     public function webhookUrl(): string
     {
         $url = $this->config->get('aqtim.webhook.url') ?? $this->mode()->webhookUrl();

@@ -12,4 +12,8 @@ return [
     'ticket' => [
         'url' => null,
     ],
+
+    'short' => [
+        'url' => null,
+    ],
 ];
